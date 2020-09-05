@@ -1,0 +1,17 @@
+{
+  "name": "core-test",
+  "version": "1.0.0",
+  "author": "Leon Montealegre",
+  "license": "Unlicense",
+  "description": "Test",
+  "devDependencies": {
+    "kingdolphin-test-scripts": "^1.1.0",
+    "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "serialeazy": "^2.0.3"
+  },
+  "scripts": {
+    "test": "kingdolphin-test-scripts test"
+  }
+}

@@ -1,0 +1,15 @@
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+node_modules/
+coverage/
+build/
+yarn.lock
+
+# IDEs (IntelliJ/VSCode)
+.idea/
+.vscode/
