@@ -4,6 +4,10 @@
   "author": "Leon Montealegre",
   "license": "Unlicense",
   "description": "Test",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kingdolphin-test-organization/core.git"
+  },
   "devDependencies": {
     "kingdolphin-test-scripts": "^1.1.0",
     "typescript": "^4.0.2"
