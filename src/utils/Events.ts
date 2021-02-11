@@ -31,7 +31,7 @@ export type ZoomEvent = {
     pos: Vector;
 }
 export type OtherEvent = {
-    type: "mouseenter" | "mousemove" | "mouseleave";
+    type: "mouseenter" | "mousemove" | "mouseleave" | "unknown";
 }
 
 export type Event = MouseEvent | KeyboardEvent | ZoomEvent | OtherEvent;

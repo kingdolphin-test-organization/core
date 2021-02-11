@@ -80,7 +80,6 @@ export const WiringTool = (() => {
             const {history, designer} = info;
             // See if we ended on a port
             const port2 = findPorts(info).find(p => wire.canConnectTo(p));
-            console.log(port, port2);
             if (port2 !== undefined)
                 history.add(new ConnectionAction(designer, port, port2).execute());
         },

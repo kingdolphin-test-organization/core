@@ -5,7 +5,6 @@ import {V, Vector} from "Vector";
 import {Event}       from "core/utils/Events";
 import {CircuitInfo} from "core/utils/CircuitInfo";
 
-import {GroupAction}     from "core/actions/GroupAction";
 import {CopyGroupAction} from "core/actions/CopyGroupAction";
 import {TranslateAction} from "core/actions/transform/TranslateAction";
 import {Tool}            from "core/tools/Tool";
@@ -16,7 +15,6 @@ import {Component} from "core/models";
 export const TranslateTool: Tool = (() => {
     let initalPositions = [] as Vector[];
     let components = [] as Component[];
-    let action: GroupAction;
 
     function snap(p: Vector): Vector {
         return V(Math.floor(p.x/GRID_SIZE + 0.5) * GRID_SIZE,
@@ -51,8 +49,6 @@ export const TranslateTool: Tool = (() => {
 
             initalPositions = components.map(o => o.getPos());
 
-            action = new GroupAction();
-
             // explicitly start a drag
             this.onEvent(event, info);
         },
@@ -63,7 +59,7 @@ export const TranslateTool: Tool = (() => {
 
 
         onEvent(event: Event, info: CircuitInfo): boolean {
-            const {input, camera, designer} = info;
+            const {input, camera, history, designer} = info;
 
             switch (event.type) {
                 case "mousedrag":
@@ -89,7 +85,7 @@ export const TranslateTool: Tool = (() => {
                 case "keyup":
                     // Duplicate group when we press the spacebar
                     if (event.key === SPACEBAR_KEY) {
-                        action.add(new CopyGroupAction(designer, components));
+                        history.add(new CopyGroupAction(designer, components).execute());
                         return true;
                     }
                     break;

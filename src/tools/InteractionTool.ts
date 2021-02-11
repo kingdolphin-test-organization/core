@@ -27,8 +27,8 @@ export class InteractionTool extends DefaultTool {
     }
 
     private findObject(pos: Vector, {designer}: Partial<CircuitInfo>): IOObject {
-        return designer.getAll().find(o => (isPressable(o) && o.isWithinPressBounds(pos) ||
-                                           o.isWithinSelectBounds(pos)));
+        return designer.getAll().reverse().find(o => (isPressable(o) && o.isWithinPressBounds(pos) ||
+                                                      o.isWithinSelectBounds(pos)));
     }
 
     public onEvent(event: Event, info: CircuitInfo): boolean {
