@@ -19,13 +19,13 @@ export const SnipWirePortsHandler: EventHandler = ({
          selections.amount() > 0 &&
          selections.all(o => isNode(o))),
 
-    getResponse: ({designer, selections}: CircuitInfo) => {
+    getResponse: ({history, designer, selections}: CircuitInfo) => {
         const ports = selections.get().filter(o => isNode(o)) as Node[];
 
         // Deselect the ports and then snip them
-        return new GroupAction([
+        history.add(new GroupAction([
             CreateDeselectAllAction(selections).execute(),
             CreateGroupSnipAction(designer, ports).execute()
-        ]);
+        ]));
     }
 });

@@ -18,13 +18,13 @@ export const DeleteHandler: EventHandler = ({
          (event.key === DELETE_KEY || event.key === BACKSPACE_KEY) &&
          selections.amount() > 0),
 
-    getResponse: ({designer, selections}: CircuitInfo) => {
+    getResponse: ({history, designer, selections}: CircuitInfo) => {
         const objs = selections.get().filter(o => o instanceof IOObject) as IOObject[];
 
         // Deselect the objects then remove them
-        return new GroupAction([
+        history.add(new GroupAction([
             CreateDeselectAllAction(selections).execute(),
             CreateDeleteGroupAction(designer, objs).execute()
-        ]);
+        ]));
     }
 });

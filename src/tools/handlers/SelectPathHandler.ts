@@ -20,7 +20,7 @@ export const SelectPathHandler: EventHandler = ({
             !== undefined
          ),
 
-    getResponse: ({input, camera, designer, selections}: CircuitInfo) => {
+    getResponse: ({input, camera, history, designer, selections}: CircuitInfo) => {
         const worldMousePos = camera.getWorldPos(input.getMousePos());
 
         const wire = designer
@@ -29,6 +29,6 @@ export const SelectPathHandler: EventHandler = ({
             .find(o => o.isWithinSelectBounds(worldMousePos));
         const path = GetPath(wire);
 
-        return CreateGroupSelectAction(selections, path).execute();
+        history.add(CreateGroupSelectAction(selections, path).execute());
     }
 });

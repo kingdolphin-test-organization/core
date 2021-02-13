@@ -38,9 +38,12 @@ export class Input {
 
     private dragTime: number;
 
+    private blocked: boolean;
+
     public constructor(canvas: HTMLCanvasElement, dragTime: number = DRAG_TIME) {
         this.canvas = canvas;
         this.dragTime = dragTime;
+        this.blocked = false;
 
         this.reset();
 
@@ -165,11 +168,14 @@ export class Input {
         this.keysDown  = new Map();
     }
 
+    public block(): void {
+        this.blocked = true;
+    }
+    public unblock(): void {
+        this.blocked = false;
+    }
+
     public addListener(listener: Listener): void {
-        // let arr = this.listeners.get(type);
-        // if (arr == undefined)
-        //     this.listeners.set(type, arr = []);
-        // arr.push(listener);
         this.listeners.push(listener);
     }
 
@@ -326,6 +332,9 @@ export class Input {
     }
 
     private callListeners(event: Event): void {
+        if (this.blocked)
+            return;
+
         for (const listener of this.listeners)
             listener(event);
     }

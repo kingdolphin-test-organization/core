@@ -13,6 +13,6 @@ export const DeselectAllHandler: EventHandler = ({
          event.key === ESC_KEY &&
          selections.amount() > 0),
 
-    getResponse: ({selections}: CircuitInfo) =>
-        CreateDeselectAllAction(selections).execute()
+    getResponse: ({history, selections}: CircuitInfo) =>
+        history.add(CreateDeselectAllAction(selections).execute())
 });

@@ -22,20 +22,20 @@ export const DuplicateHandler: EventHandler = ({
          input.isModifierKeyDown() &&
          selections.amount() > 0),
 
-    getResponse: ({camera, designer, selections}: CircuitInfo) => {
+    getResponse: ({history, designer, selections}: CircuitInfo) => {
         const objs = selections.get().filter(o => o instanceof IOObject) as IOObject[];
 
         const copyGroupAction = new CopyGroupAction(designer, objs);
         const components = copyGroupAction.getCopies().getComponents();
 
         // Copy the group and then select them and move them over slightly
-        return new GroupAction([
+        history.add(new GroupAction([
             copyGroupAction.execute(),
             CreateDeselectAllAction(selections).execute(),
             CreateGroupSelectAction(selections, components).execute(),
             new TranslateAction(components,
                                 components.map(o => o.getPos()),
                                 components.map(o => o.getPos().add(V(5, 5)))).execute()
-        ]);
+        ]));
     }
 });

@@ -15,7 +15,7 @@ export const FitToScreenHandler: EventHandler = ({
     conditions: (event: Event, {}: CircuitInfo) =>
         (event.type === "keydown" && event.key === F_KEY),
 
-    getResponse: ({camera, designer, selections}: CircuitInfo) => {
+    getResponse: ({camera, history, designer, selections}: CircuitInfo) => {
         // Fit to selections, if any;
         //  otherwise fit all CullableObjects
         const objs = (selections.amount() === 0 ?
@@ -24,6 +24,6 @@ export const FitToScreenHandler: EventHandler = ({
 
         // Get final camera position and zoom
         const [pos, zoom] = GetCameraFit(camera, objs, FIT_PADDING_RATIO);
-        return new MoveCameraAction(camera, pos, zoom).execute();
+        history.add(new MoveCameraAction(camera, pos, zoom).execute());
     }
 });

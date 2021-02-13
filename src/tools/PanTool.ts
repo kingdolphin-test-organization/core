@@ -28,7 +28,6 @@ export const PanTool: Tool = (() => {
 
 
         onActivate(event: Event, info: CircuitInfo): void {
-            isDragging = false;
             if (event.type === "mousedrag")
                 this.onEvent(event, info); // Explicitly call drag event
         },

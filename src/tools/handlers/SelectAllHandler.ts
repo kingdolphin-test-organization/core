@@ -12,6 +12,6 @@ export const SelectAllHandler: EventHandler = ({
     conditions: (event: Event, {input}: CircuitInfo) =>
         (event.type === "keydown" && event.key === A_KEY && input.isModifierKeyDown()),
 
-    getResponse: ({designer, selections}: CircuitInfo) =>
-        CreateGroupSelectAction(selections, designer.getObjects()).execute()
+    getResponse: ({history, designer, selections}: CircuitInfo) =>
+        history.add(CreateGroupSelectAction(selections, designer.getObjects()).execute())
 });

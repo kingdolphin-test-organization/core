@@ -1,5 +1,4 @@
-import {Y_KEY, Z_KEY} from "core/utils/Constants";
-import {V, Vector} from "Vector";
+import {Vector} from "Vector";
 
 import {CircuitInfo} from "core/utils/CircuitInfo";
 import {Event} from "core/utils/Events";
@@ -9,6 +8,7 @@ import {IOObject} from "core/models";
 
 import {DefaultTool} from "./DefaultTool";
 
+import {EventHandler} from "./EventHandler";
 import {SelectAllHandler}     from "./handlers/SelectAllHandler";
 import {FitToScreenHandler}   from "./handlers/FitToScreenHandler";
 import {DuplicateHandler}     from "./handlers/DuplicateHandler";
@@ -17,22 +17,25 @@ import {SnipWirePortsHandler} from "./handlers/SnipWirePortsHandler";
 import {DeselectAllHandler}   from "./handlers/DeselectAllHandler";
 import {SelectionHandler}     from "./handlers/SelectionHandler";
 import {SelectPathHandler}    from "./handlers/SelectPathHandler";
+import {UndoHandler}          from "./handlers/UndoHandler";
+import {RedoHandler}          from "./handlers/RedoHandler";
 
 
 export class InteractionTool extends DefaultTool {
-    public constructor() {
-        super(SelectAllHandler, FitToScreenHandler, DuplicateHandler,
-              DeleteHandler, SnipWirePortsHandler, DeselectAllHandler,
-              SelectionHandler, SelectPathHandler);
+    public constructor(handlers: EventHandler[] =
+            [SelectAllHandler, FitToScreenHandler, DuplicateHandler,
+             DeleteHandler, SnipWirePortsHandler, DeselectAllHandler,
+             SelectionHandler, SelectPathHandler, RedoHandler, UndoHandler]) {
+        super(...handlers);
     }
 
     private findObject(pos: Vector, {designer}: Partial<CircuitInfo>): IOObject {
         return designer.getAll().reverse().find(o => (isPressable(o) && o.isWithinPressBounds(pos) ||
-                                                      o.isWithinSelectBounds(pos)));
+                                                 o.isWithinSelectBounds(pos)));
     }
 
     public onEvent(event: Event, info: CircuitInfo): boolean {
-        const {locked, input, camera, history, currentlyPressedObject} = info;
+        const {locked, input, camera, currentlyPressedObject} = info;
 
         if (locked)
             return false;
@@ -66,20 +69,6 @@ export class InteractionTool extends DefaultTool {
                 // Find and click object
                 if (isPressable(obj) && obj.isWithinPressBounds(worldMousePos)) {
                     obj.click();
-                    return true;
-                }
-                break;
-
-            case "keydown":
-                // Redo: CMD/CTRL + SHIFT + Z   or   CMD/CTRL + Y
-                if (input.isModifierKeyDown() && input.isShiftKeyDown() && event.key == Z_KEY ||
-                    input.isModifierKeyDown() &&                           event.key == Y_KEY) {
-                    history.redo();
-                    return true;
-                }
-                // Undo: CMD/CTRL + Z
-                if (input.isModifierKeyDown() && event.key == Z_KEY) {
-                    history.undo();
                     return true;
                 }
                 break;
